@@ -45,10 +45,15 @@ const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
         remaining: remaining
       });
 
-      // Cutover at specified time before end
-      if (remaining <= cutoverTime && !hasSwapped) {
+      // Calculate crossfade start time (crossfade should COVER the cutover)
+      const crossfadeStartTime = crossfadeDuration > 0
+        ? cutoverTime + (crossfadeDuration / 2)
+        : cutoverTime;
+
+      // Start crossfade early so it covers the cutover transition
+      if (remaining <= crossfadeStartTime && !hasSwapped) {
         hasSwapped = true;
-        console.log(`Cutover: ${remaining.toFixed(0)}ms remaining, crossfade: ${crossfadeDuration}ms`);
+        console.log(`Starting crossfade at ${remaining.toFixed(0)}ms remaining (cutover: ${cutoverTime}ms, fade: ${crossfadeDuration}ms)`);
 
         // Inactive video should already be at 0 and ready
         // Just play it
