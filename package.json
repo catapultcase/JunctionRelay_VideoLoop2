@@ -1,0 +1,22 @@
+{
+  "name": "junctionrelay-videoloop2-custom",
+  "version": "1.0.0",
+  "description": "Custom dual-video seamless looping implementation for JunctionRelay FrameEngine",
+  "main": "src/VideoLooper.jsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["video", "loop", "seamless", "react"],
+  "author": "CatapultCase",
+  "license": "PROPRIETARY",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "vite": "^7.2.4"
+  }
+}

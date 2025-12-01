@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom VideoLooper - Seamless Dual-Video Looping</title>
+    <style>
+        /* HDR Fix: Forces consistent color processing for both video elements */
+        /* Prevents HDR tone mapping differences that cause color shift during crossfade */
+        video {
+            filter: brightness(1.0) contrast(1.0) saturate(1.0) !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
