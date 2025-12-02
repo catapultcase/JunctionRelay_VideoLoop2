@@ -1,13 +1,15 @@
 import { useRef, useEffect, useState } from 'react';
 
-const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
+const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0, objectFit = 'cover' }) => {
   const video1Ref = useRef(null);
   const video2Ref = useRef(null);
   const [debugInfo, setDebugInfo] = useState({
     duration: 0,
     activeVideo: 1,
     currentTime: 0,
-    remaining: 0
+    remaining: 0,
+    videoWidth: 0,
+    videoHeight: 0
   });
 
   useEffect(() => {
@@ -42,7 +44,9 @@ const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
         duration: durationMs,
         activeVideo: activeVideo,
         currentTime: currentTimeMs,
-        remaining: remaining
+        remaining: remaining,
+        videoWidth: activeVid.videoWidth,
+        videoHeight: activeVid.videoHeight
       });
 
       // Calculate crossfade start time (crossfade should COVER the cutover)
@@ -118,7 +122,14 @@ const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
   }, [source, cutoverTime, crossfadeDuration]);
 
   return (
-    <div style={{ display: 'grid', width: '100%', height: '100%', position: 'relative' }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '100%',
+      gridTemplateRows: '100%',
+      width: '100%',
+      height: '100%',
+      position: 'relative'
+    }}>
       <video
         ref={video1Ref}
         src={source}
@@ -128,7 +139,7 @@ const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
           gridArea: '1 / 1',
           width: '100%',
           height: '100%',
-          objectFit: 'cover'
+          objectFit: objectFit
         }}
       />
       <video
@@ -140,7 +151,7 @@ const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
           gridArea: '1 / 1',
           width: '100%',
           height: '100%',
-          objectFit: 'cover',
+          objectFit: objectFit,
           opacity: 0
         }}
       />
@@ -156,6 +167,10 @@ const VideoLooper = ({ source, cutoverTime = 1000, crossfadeDuration = 0 }) => {
         borderRadius: '4px',
         zIndex: 1000
       }}>
+        <div><strong style={{ color: '#ff0' }}>Video Size:</strong> {debugInfo.videoWidth}×{debugInfo.videoHeight}</div>
+        <div><strong style={{ color: '#ff0' }}>Frame Size:</strong> 1560×720</div>
+        <div><strong style={{ color: '#ff0' }}>Object Fit:</strong> {objectFit}</div>
+        <div style={{ borderTop: '1px solid #444', marginTop: '8px', paddingTop: '8px' }}></div>
         <div><strong>Duration:</strong> {(debugInfo.duration / 1000).toFixed(2)}s ({debugInfo.duration.toFixed(0)}ms)</div>
         <div><strong>Playing:</strong> Video {debugInfo.activeVideo} {debugInfo.activeVideo === 1 ? '(Main)' : '(Clone)'}</div>
         <div><strong>Current Time:</strong> {(debugInfo.currentTime / 1000).toFixed(2)}s ({debugInfo.currentTime.toFixed(0)}ms)</div>
